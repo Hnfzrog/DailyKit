@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>E-Wedding Invitation Builder — DailyKit</title>
+  <!--
+  ADSENSE: Uncomment after approval and replace IDs.
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXX" crossorigin="anonymous"></script>
+  -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f8f5f0; color: #1e293b; }
+    a { text-decoration: none; color: inherit; }
+
+    /* ── Ad Slot ── */
+    .ad-slot {
+      width: 100%; padding: 0.5rem 0;
+      background: rgba(0,0,0,0.04);
+    }
+    .ad-ph {
+      max-width: 900px; margin: 0 auto;
+      min-height: 80px; border: 1px dashed #c9bfb0;
+      border-radius: 8px; display: flex; align-items: center;
+      justify-content: center; color: #9ca3af; font-size: 0.78rem;
+      letter-spacing: 0.07em; text-transform: uppercase;
+    }
+    /* ── Nav ── */
+    .top-nav {
+      background: #fff; border-bottom: 1px solid #e8e0d5;
+      padding: 0.7rem 1.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .back-link { color: #b45309; font-weight: 600; font-size: 0.9rem; }
+    .back-link:hover { text-decoration: underline; }
+    .tool-title { font-weight: 700; font-size: 1rem; }
+
+    /* ── Layout ── */
+    .wrap {
+      max-width: 1100px; margin: 1.5rem auto; padding: 0 1rem;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;
+    }
+    @media (max-width: 760px) { .wrap { grid-template-columns: 1fr; } }
+
+    /* ── Form Panel ── */
+    .form-panel {
+      background: #fff; border: 1px solid #e8e0d5;
+      border-radius: 16px; padding: 1.5rem;
+    }
+    .form-panel h2 { font-size: 1.1rem; margin-bottom: 1rem; }
+    .field { margin-bottom: 1rem; }
+    .field label { display: block; font-size: 0.85rem; font-weight: 600; color: #5a4a3a; margin-bottom: 0.3rem; }
+    .field input, .field textarea {
+      width: 100%; border: 1px solid #ddd5c8; border-radius: 8px;
+      padding: 0.6rem 0.75rem; font: inherit; background: #fdfaf7;
+      transition: border-color 0.2s;
+    }
+    .field input:focus, .field textarea:focus {
+      outline: none; border-color: #b45309; background: #fff;
+    }
+    .field textarea { resize: vertical; min-height: 80px; }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    .btn-print {
+      width: 100%; padding: 0.75rem;
+      background: #92400e; color: #fff;
+      border: none; border-radius: 10px; font: inherit;
+      font-weight: 700; cursor: pointer; font-size: 0.95rem;
+      margin-top: 0.5rem; transition: background 0.2s;
+    }
+    .btn-print:hover { background: #78350f; }
+
+    /* ── Preview Panel ── */
+    .preview-panel {
+      background: #fff; border: 1px solid #e8e0d5;
+      border-radius: 16px; padding: 1.5rem;
+      min-height: 500px; display: flex; flex-direction: column;
+    }
+    .preview-panel h2 { font-size: 1rem; margin-bottom: 1rem; color: #78716c; }
+
+    /* ── Invitation Card (printed separately) ── */
+    .invite-card {
+      flex: 1;
+      background: linear-gradient(160deg, #fffaf4, #fef3e2);
+      border: 1.5px solid #d4a96a;
+      border-radius: 12px;
+      padding: 2.5rem 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      font-family: 'Playfair Display', serif;
+    }
+    .invite-card::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(circle at 20% 10%, rgba(212,169,106,0.25) 0%, transparent 50%),
+        radial-gradient(circle at 80% 90%, rgba(212,169,106,0.2) 0%, transparent 50%);
+      pointer-events: none;
+    }
+    .invite-divider { color: #d4a96a; font-size: 1.4rem; margin: 0.4rem 0; letter-spacing: 0.3em; }
+    .invite-small { font-family: 'Lato', sans-serif; font-size: 0.78rem; font-weight: 300; color: #78716c; letter-spacing: 0.18em; text-transform: uppercase; }
+    .invite-names { font-size: clamp(1.6rem, 4vw, 2.2rem); font-weight: 700; color: #451a03; line-height: 1.2; margin: 0.5rem 0; }
+    .invite-and { font-size: 1.4rem; font-style: italic; color: #b45309; margin: 0.2rem 0; }
+    .invite-sep { width: 60px; height: 1.5px; background: linear-gradient(90deg, transparent, #d4a96a, transparent); margin: 1rem auto; }
+    .invite-detail-label { font-family: 'Lato', sans-serif; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.15em; color: #9ca3af; }
+    .invite-detail-value { font-size: 1rem; color: #292524; margin-bottom: 0.8rem; }
+    .invite-message { font-style: italic; font-size: 0.95rem; color: #57534e; margin: 1rem 0; line-height: 1.65; }
+    .invite-rsvp { font-family: 'Lato', sans-serif; font-size: 0.82rem; color: #9ca3af; margin-top: 1rem; }
+    .invite-hearts { font-size: 1.4rem; letter-spacing: 0.4rem; }
+
+    /* ── Bottom ad ── */
+    .bot-wrap { max-width: 1100px; margin: 0 auto; padding: 0 1rem 2rem; }
+
+    @media print {
+      body { background: #fff; }
+      .ad-slot, .top-nav, .form-panel, .preview-panel h2, .btn-print { display: none !important; }
+      .wrap { display: block; }
+      .preview-panel { border: none; padding: 0; }
+      .invite-card { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- TOP AD -->
+<div class="ad-slot">
+  <!--
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXX"
+    data-ad-slot="SLOT_ID_1" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  -->
+  <div class="ad-ph">Advertisement</div>
+</div>
+
+<nav class="top-nav">
+  <a class="back-link" href="../index.html">← All Tools</a>
+  <span class="tool-title">💌 E-Wedding Invitation Builder</span>
+  <span></span>
+</nav>
+
+<div class="wrap">
+  <!-- FORM -->
+  <div class="form-panel">
+    <h2>Customize Your Invitation</h2>
+
+    <div class="field-row">
+      <div class="field">
+        <label>Groom's Name</label>
+        <input type="text" id="groomName" placeholder="Ahmad Reza" oninput="updatePreview()" />
+      </div>
+      <div class="field">
+        <label>Bride's Name</label>
+        <input type="text" id="brideName" placeholder="Siti Rahayu" oninput="updatePreview()" />
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>Wedding Date</label>
+        <input type="date" id="weddingDate" oninput="updatePreview()" />
+      </div>
+      <div class="field">
+        <label>Time</label>
+        <input type="time" id="weddingTime" oninput="updatePreview()" />
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Venue / Location</label>
+      <input type="text" id="venue" placeholder="Grand Ballroom, Jakarta Hotel" oninput="updatePreview()" />
+    </div>
+
+    <div class="field">
+      <label>Personal Message</label>
+      <textarea id="message" placeholder="Together with their families, joyfully invite you to celebrate their wedding..." oninput="updatePreview()"></textarea>
+    </div>
+
+    <div class="field">
+      <label>RSVP Contact (Phone / Email)</label>
+      <input type="text" id="rsvpContact" placeholder="+62 812-3456-7890" oninput="updatePreview()" />
+    </div>
+
+    <button class="btn-print" onclick="window.print()">🖨 Print / Save as PDF</button>
+  </div>
+
+  <!-- PREVIEW -->
+  <div class="preview-panel">
+    <h2>Live Preview</h2>
+    <div class="invite-card" id="invitePreview">
+      <p class="invite-small">We joyfully announce the wedding of</p>
+      <div class="invite-hearts">🌸 💍 🌸</div>
+      <div class="invite-names" id="prev-groom">Ahmad Reza</div>
+      <div class="invite-and">&amp;</div>
+      <div class="invite-names" id="prev-bride">Siti Rahayu</div>
+      <div class="invite-sep"></div>
+      <p class="invite-detail-label">Date &amp; Time</p>
+      <p class="invite-detail-value" id="prev-datetime">Saturday, 14 June 2026 · 10:00 AM</p>
+      <p class="invite-detail-label">Venue</p>
+      <p class="invite-detail-value" id="prev-venue">Grand Ballroom, Jakarta Hotel</p>
+      <div class="invite-divider">· · ·</div>
+      <p class="invite-message" id="prev-message">Together with their families, joyfully invite you to celebrate their wedding.</p>
+      <div class="invite-sep"></div>
+      <p class="invite-rsvp" id="prev-rsvp">RSVP: +62 812-3456-7890</p>
+    </div>
+  </div>
+</div>
+
+<!-- BOTTOM AD -->
+<div class="bot-wrap">
+  <div class="ad-slot">
+    <!--
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXX"
+      data-ad-slot="SLOT_ID_2" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    -->
+    <div class="ad-ph">Advertisement</div>
+  </div>
+</div>
+
+<script>
+  function fmt(dateStr, timeStr) {
+    if (!dateStr) return '';
+    const d = new Date(dateStr + 'T00:00:00');
+    const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    let out = days[d.getDay()] + ', ' + d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
+    if (timeStr) {
+      const [h, m] = timeStr.split(':');
+      const hr = parseInt(h);
+      out += ' · ' + (hr > 12 ? hr - 12 : hr || 12) + ':' + m + ' ' + (hr >= 12 ? 'PM' : 'AM');
+    }
+    return out;
+  }
+
+  function updatePreview() {
+    const groom = document.getElementById('groomName').value || 'Ahmad Reza';
+    const bride = document.getElementById('brideName').value || 'Siti Rahayu';
+    const date  = document.getElementById('weddingDate').value;
+    const time  = document.getElementById('weddingTime').value;
+    const venue = document.getElementById('venue').value || 'Grand Ballroom, Jakarta Hotel';
+    const msg   = document.getElementById('message').value || 'Together with their families, joyfully invite you to celebrate their wedding.';
+    const rsvp  = document.getElementById('rsvpContact').value || '';
+
+    document.getElementById('prev-groom').textContent    = groom;
+    document.getElementById('prev-bride').textContent    = bride;
+    document.getElementById('prev-datetime').textContent = fmt(date, time) || 'Saturday, 14 June 2026 · 10:00 AM';
+    document.getElementById('prev-venue').textContent    = venue;
+    document.getElementById('prev-message').textContent  = msg;
+    document.getElementById('prev-rsvp').textContent     = rsvp ? 'RSVP: ' + rsvp : '';
+  }
+
+  // Set default date
+  document.getElementById('weddingDate').value = '2026-06-14';
+  document.getElementById('weddingTime').value = '10:00';
+  updatePreview();
+</script>
+</body>
+</html>

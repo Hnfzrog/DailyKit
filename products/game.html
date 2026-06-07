@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CoinRush — DailyKit</title>
+  <!--
+  ADSENSE: Uncomment after approval.
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXX" crossorigin="anonymous"></script>
+  -->
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700;800&family=Plus+Jakarta+Sans:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: #0b1120;
+      color: #e2e8f0;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Ad slots */
+    .ad-slot { width: 100%; padding: 0.4rem 0; background: rgba(0,0,0,0.3); }
+    .ad-ph {
+      max-width: 900px; margin: 0 auto;
+      min-height: 70px; border: 1px dashed rgba(255,255,255,0.1);
+      border-radius: 8px; display: flex; align-items: center;
+      justify-content: center; color: #475569; font-size: 0.75rem;
+      letter-spacing: 0.07em; text-transform: uppercase;
+    }
+
+    /* Nav */
+    .top-nav {
+      width: 100%; background: rgba(255,255,255,0.04);
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      padding: 0.65rem 1.2rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .back-link { color: #38bdf8; font-weight: 600; font-size: 0.9rem; }
+    .game-label { font-family: 'Space Grotesk', sans-serif; font-weight: 800; font-size: 1rem; color: #f59e0b; }
+
+    /* Game wrap */
+    .game-wrap {
+      flex: 1;
+      width: 100%;
+      max-width: 520px;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    /* HUD */
+    .hud {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0.5rem;
+    }
+    .hud-box {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 0.5rem;
+      text-align: center;
+    }
+    .hud-label { font-size: 0.65rem; color: #64748b; text-transform: uppercase; letter-spacing: 0.06em; }
+    .hud-val { font-family: 'Space Grotesk', sans-serif; font-size: 1.3rem; font-weight: 800; }
+    .hud-val.score-val { color: #f59e0b; }
+    .hud-val.lives-val { color: #f43f5e; }
+    .hud-val.level-val { color: #38bdf8; }
+
+    /* Canvas */
+    #gameCanvas {
+      width: 100%;
+      max-width: 480px;
+      border-radius: 16px;
+      border: 1.5px solid rgba(255,255,255,0.1);
+      cursor: crosshair;
+      touch-action: none;
+      display: block;
+    }
+
+    /* Start/Over overlay */
+    #overlay {
+      position: relative;
+      width: 100%;
+      max-width: 480px;
+    }
+    #overlay canvas {
+      position: absolute; inset: 0; z-index: 0;
+    }
+    .overlay-content {
+      position: relative; z-index: 1;
+      background: rgba(11, 17, 32, 0.92);
+      border: 1.5px solid rgba(255,255,255,0.12);
+      border-radius: 16px;
+      padding: 2.5rem 2rem;
+      text-align: center;
+    }
+    .overlay-content h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: #f59e0b;
+      margin: 0 0 0.5rem;
+    }
+    .overlay-content p { color: #94a3b8; font-size: 0.9rem; line-height: 1.6; }
+    .overlay-content .best { color: #38bdf8; font-weight: 700; font-size: 1rem; margin-top: 0.75rem; }
+    .start-btn {
+      margin-top: 1.5rem;
+      padding: 0.85rem 2.5rem;
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #fff;
+      border: none;
+      border-radius: 999px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 800;
+      cursor: pointer;
+      letter-spacing: 0.03em;
+      transition: transform 0.15s, box-shadow 0.15s;
+      box-shadow: 0 8px 20px rgba(245, 158, 11, 0.4);
+    }
+    .start-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(245, 158, 11, 0.5); }
+    .instructions {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;
+      margin-top: 1.25rem; text-align: left;
+    }
+    .instr { background: rgba(255,255,255,0.04); border-radius: 10px; padding: 0.6rem 0.75rem; font-size: 0.82rem; color: #94a3b8; }
+    .instr strong { display: block; color: #e2e8f0; margin-bottom: 0.2rem; }
+    .combo-msg { color: #f59e0b; font-size: 0.85rem; min-height: 1.2em; font-weight: 600; }
+
+    .bot-wrap { width: 100%; max-width: 520px; padding: 0 1rem 2rem; }
+  </style>
+</head>
+<body>
+
+<!-- TOP AD -->
+<div class="ad-slot" style="width:100%">
+  <!--
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXX"
+    data-ad-slot="SLOT_ID_1" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  -->
+  <div class="ad-ph">Advertisement</div>
+</div>
+
+<nav class="top-nav">
+  <a class="back-link" href="../index.html">← All Tools</a>
+  <span class="game-label">🪙 CoinRush</span>
+  <span></span>
+</nav>
+
+<div class="game-wrap">
+
+  <!-- HUD -->
+  <div class="hud" id="hud">
+    <div class="hud-box">
+      <div class="hud-label">Score</div>
+      <div class="hud-val score-val" id="scoreVal">0</div>
+    </div>
+    <div class="hud-box">
+      <div class="hud-label">Lives</div>
+      <div class="hud-val lives-val" id="livesVal">❤❤❤</div>
+    </div>
+    <div class="hud-box">
+      <div class="hud-label">Level</div>
+      <div class="hud-val level-val" id="levelVal">1</div>
+    </div>
+  </div>
+
+  <!-- Combo msg -->
+  <div class="combo-msg" id="comboMsg"></div>
+
+  <!-- Canvas -->
+  <canvas id="gameCanvas" width="480" height="500"></canvas>
+
+  <!-- Start overlay -->
+  <div id="startOverlay" style="width:100%;max-width:480px">
+    <div class="overlay-content">
+      <h1>🪙 CoinRush</h1>
+      <p>Tap coins before they vanish.<br>Miss too many and lose a life.<br>Chain combos for bonus points!</p>
+      <div class="instructions">
+        <div class="instr"><strong>🪙 Gold Coin</strong>+1 point</div>
+        <div class="instr"><strong>💎 Diamond</strong>+3 points</div>
+        <div class="instr"><strong>⭐ Star</strong>+5 · Rare!</div>
+        <div class="instr"><strong>🔥 Combo</strong>×2 multiplier</div>
+      </div>
+      <div class="best" id="bestScore"></div>
+      <button class="start-btn" onclick="startGame()">▶ START GAME</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- BETWEEN-GAME AD (shows on game over) -->
+<div class="bot-wrap">
+  <div class="ad-slot">
+    <!--
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXX"
+      data-ad-slot="SLOT_ID_2" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    -->
+    <div class="ad-ph">Advertisement</div>
+  </div>
+</div>
+
+<script>
+  const canvas = document.getElementById('gameCanvas');
+  const ctx    = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+
+  let score, lives, level, coins, floats, combo, comboTimer;
+  let running = false, spawnTimer = null, raf = null;
+  let collected = 0, needed = 12;
+
+  const COIN_TYPES = [
+    { emoji: '🪙', color: '#f59e0b', glow: '#fbbf24', val: 1, weight: 60, r: 30 },
+    { emoji: '💎', color: '#38bdf8', glow: '#7dd3fc', val: 3, weight: 30, r: 26 },
+    { emoji: '⭐', color: '#a78bfa', glow: '#c4b5fd', val: 5, weight: 10, r: 22 },
+  ];
+
+  function pickType() {
+    const roll = Math.random() * 100;
+    let acc = 0;
+    for (const t of COIN_TYPES) { acc += t.weight; if (roll < acc) return t; }
+    return COIN_TYPES[0];
+  }
+
+  class Coin {
+    constructor() {
+      const t = pickType();
+      Object.assign(this, t);
+      this.x = this.r + Math.random() * (W - this.r * 2);
+      this.y = this.r + Math.random() * (H - this.r * 2 - 60) + 30;
+      this.life = Math.max(1400, 3000 - (level - 1) * 120);
+      this.born = performance.now();
+      this.dead = false;
+      this.pulse = 0;
+    }
+    get age() { return performance.now() - this.born; }
+    get progress() { return Math.min(this.age / this.life, 1); }
+    get alpha() {
+      const p = this.progress;
+      return p > 0.75 ? (1 - p) / 0.25 : 1;
+    }
+    get cr() { return this.r * (1 - this.progress * 0.35); }
+    get expired() { return this.age >= this.life; }
+
+    draw(now) {
+      this.pulse = (Math.sin(now / 280) * 0.06) + 1;
+      const r = this.cr * this.pulse;
+      ctx.save();
+      ctx.globalAlpha = Math.max(0, this.alpha);
+      ctx.shadowBlur = 18; ctx.shadowColor = this.glow;
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, r, 0, Math.PI * 2);
+      ctx.fillStyle = this.color;
+      ctx.fill();
+      ctx.font = `${Math.round(r * 1.1)}px serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.shadowBlur = 0;
+      ctx.fillText(this.emoji, this.x, this.y);
+      // timer ring
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, r + 4, -Math.PI / 2, -Math.PI / 2 + (1 - this.progress) * Math.PI * 2);
+      ctx.strokeStyle = this.progress > 0.7 ? '#f43f5e' : 'rgba(255,255,255,0.3)';
+      ctx.lineWidth = 2.5;
+      ctx.stroke();
+      ctx.restore();
+    }
+  }
+
+  class FloatText {
+    constructor(x, y, text, color) {
+      this.x = x; this.y = y; this.text = text; this.color = color;
+      this.alpha = 1; this.vy = -2.2;
+    }
+    update() { this.y += this.vy; this.alpha -= 0.028; this.vy *= 0.97; }
+    draw() {
+      if (this.alpha <= 0) return;
+      ctx.save();
+      ctx.globalAlpha = this.alpha;
+      ctx.fillStyle = this.color;
+      ctx.font = 'bold 20px Space Grotesk, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(this.text, this.x, this.y);
+      ctx.restore();
+    }
+  }
+
+  function spawn() {
+    if (!running) return;
+    const max = Math.min(3 + level, 7);
+    if (coins.length < max) coins.push(new Coin());
+  }
+
+  function updateHUD() {
+    document.getElementById('scoreVal').textContent = score;
+    document.getElementById('livesVal').textContent = '❤'.repeat(lives);
+    document.getElementById('levelVal').textContent = level;
+  }
+
+  function showCombo() {
+    const el = document.getElementById('comboMsg');
+    if (combo >= 3) {
+      el.textContent = '🔥 COMBO ×' + combo + '!';
+    } else { el.textContent = ''; }
+  }
+
+  function gameLoop(now) {
+    if (!running) return;
+    ctx.clearRect(0, 0, W, H);
+
+    // bg
+    const bg = ctx.createLinearGradient(0, 0, 0, H);
+    bg.addColorStop(0, '#0f172a'); bg.addColorStop(1, '#1e293b');
+    ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
+
+    // coins
+    for (let i = coins.length - 1; i >= 0; i--) {
+      const c = coins[i];
+      if (c.dead) { coins.splice(i, 1); continue; }
+      if (c.expired) {
+        coins.splice(i, 1);
+        combo = 0; showCombo();
+        lives--;
+        updateHUD();
+        floats.push(new FloatText(c.x, c.y, '💨 Miss!', '#f43f5e'));
+        if (lives <= 0) { gameOver(); return; }
+        continue;
+      }
+      c.draw(now);
+    }
+
+    // floats
+    for (let i = floats.length - 1; i >= 0; i--) {
+      floats[i].update(); floats[i].draw();
+      if (floats[i].alpha <= 0) floats.splice(i, 1);
+    }
+
+    raf = requestAnimationFrame(gameLoop);
+  }
+
+  function tap(cx, cy) {
+    if (!running) return;
+    let hit = false;
+    for (let i = coins.length - 1; i >= 0; i--) {
+      const c = coins[i];
+      if (c.dead) continue;
+      const dx = cx - c.x, dy = cy - c.y;
+      if (Math.sqrt(dx * dx + dy * dy) <= c.cr + 6) {
+        c.dead = true;
+        combo++;
+        clearTimeout(comboTimer);
+        comboTimer = setTimeout(() => { combo = 0; showCombo(); }, 1200);
+        const mult = combo >= 3 ? 2 : 1;
+        const earned = c.val * mult;
+        score += earned;
+        collected++;
+        updateHUD();
+        showCombo();
+        floats.push(new FloatText(c.x, c.y, '+' + earned + (mult > 1 ? ' ×2' : ''), c.glow));
+        if (collected >= needed) levelUp();
+        hit = true;
+        break;
+      }
+    }
+    if (!hit) {
+      combo = 0; showCombo();
+    }
+  }
+
+  function levelUp() {
+    level++;
+    collected = 0;
+    needed = 12 + level * 2;
+    clearInterval(spawnTimer);
+    spawnTimer = setInterval(spawn, Math.max(600, 1100 - level * 70));
+    updateHUD();
+    floats.push(new FloatText(W / 2, H / 2 - 30, '⬆ Level ' + level + '!', '#a78bfa'));
+  }
+
+  function getPos(e) {
+    const rect = canvas.getBoundingClientRect();
+    const sx = W / rect.width, sy = H / rect.height;
+    if (e.changedTouches) {
+      return { x: (e.changedTouches[0].clientX - rect.left) * sx, y: (e.changedTouches[0].clientY - rect.top) * sy };
+    }
+    return { x: (e.clientX - rect.left) * sx, y: (e.clientY - rect.top) * sy };
+  }
+
+  canvas.addEventListener('click', e => { const p = getPos(e); tap(p.x, p.y); });
+  canvas.addEventListener('touchend', e => { e.preventDefault(); const p = getPos(e); tap(p.x, p.y); }, { passive: false });
+
+  function gameOver() {
+    running = false;
+    clearInterval(spawnTimer);
+    cancelAnimationFrame(raf);
+
+    const best = Math.max(parseInt(localStorage.getItem('cr_best') || '0'), score);
+    localStorage.setItem('cr_best', best);
+
+    // draw game over
+    ctx.clearRect(0, 0, W, H);
+    const bg = ctx.createLinearGradient(0, 0, 0, H);
+    bg.addColorStop(0, '#0f172a'); bg.addColorStop(1, '#1e293b');
+    ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
+
+    ctx.textAlign = 'center';
+    ctx.font = 'bold 46px Space Grotesk, sans-serif';
+    ctx.fillStyle = '#f43f5e'; ctx.fillText('GAME OVER', W / 2, H / 2 - 70);
+    ctx.font = 'bold 22px Space Grotesk, sans-serif';
+    ctx.fillStyle = '#e2e8f0'; ctx.fillText('Score: ' + score, W / 2, H / 2 - 20);
+    ctx.fillStyle = '#38bdf8'; ctx.fillText('Best: ' + best, W / 2, H / 2 + 20);
+    ctx.fillStyle = '#64748b'; ctx.font = '18px Plus Jakarta Sans, sans-serif';
+    ctx.fillText('Tap anywhere to play again', W / 2, H / 2 + 70);
+
+    // show ad slot between sessions
+    document.getElementById('betweenAd').style.display = 'block';
+
+    canvas.addEventListener('click', restart, { once: true });
+    canvas.addEventListener('touchend', e => { e.preventDefault(); restart(); }, { once: true, passive: false });
+  }
+
+  function restart() {
+    document.getElementById('betweenAd').style.display = 'none';
+    score = 0; lives = 3; level = 1; coins = []; floats = []; combo = 0;
+    collected = 0; needed = 12;
+    updateHUD(); showCombo();
+    running = true;
+    clearInterval(spawnTimer);
+    spawnTimer = setInterval(spawn, 1100);
+    raf = requestAnimationFrame(gameLoop);
+  }
+
+  function startGame() {
+    document.getElementById('startOverlay').style.display = 'none';
+    canvas.style.display = 'block';
+    score = 0; lives = 3; level = 1; coins = []; floats = []; combo = 0;
+    collected = 0; needed = 12;
+    updateHUD(); showCombo();
+    running = true;
+    spawnTimer = setInterval(spawn, 1100);
+    raf = requestAnimationFrame(gameLoop);
+  }
+
+  // Init
+  canvas.style.display = 'none';
+  const best = localStorage.getItem('cr_best');
+  if (best && parseInt(best) > 0) {
+    document.getElementById('bestScore').textContent = 'Your best: ' + best + ' pts';
+  }
+</script>
+
+<!-- BETWEEN-GAME AD (hidden until game over) -->
+<div id="betweenAd" style="display:none; width:100%; max-width:480px; padding:0 1rem;">
+  <div class="ad-slot">
+    <!--
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXX"
+      data-ad-slot="SLOT_ID_3" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    -->
+    <div class="ad-ph">Advertisement — High-frequency slot (shows on game over)</div>
+  </div>
+</div>
+
+</body>
+</html>

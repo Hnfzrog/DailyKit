@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Daily Budget Tracker — DailyKit</title>
+  <!--
+  ADSENSE: Uncomment after approval.
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXX" crossorigin="anonymous"></script>
+  -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: #f1f5f9; color: #1e293b; }
+    p, h1, h2, h3 { margin: 0; }
+    a { text-decoration: none; color: inherit; }
+
+    .ad-slot { width: 100%; padding: 0.4rem 0; background: rgba(0,0,0,0.03); }
+    .ad-ph {
+      max-width: 960px; margin: 0 auto; min-height: 80px;
+      border: 1px dashed #cbd5e1; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      color: #94a3b8; font-size: 0.75rem; letter-spacing: 0.07em; text-transform: uppercase;
+    }
+    .top-nav {
+      background: #fff; border-bottom: 1px solid #e2e8f0;
+      padding: 0.7rem 1.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .back-link { color: #10b981; font-weight: 600; font-size: 0.9rem; }
+    .tool-title { font-weight: 700; }
+
+    .wrap { max-width: 960px; margin: 1.5rem auto; padding: 0 1rem; }
+
+    /* Summary cards */
+    .summary {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.85rem;
+      margin-bottom: 1.2rem;
+    }
+    @media (max-width: 600px) { .summary { grid-template-columns: 1fr; } }
+    .sum-card {
+      background: #fff; border: 1px solid #e2e8f0; border-radius: 14px;
+      padding: 1rem; display: flex; flex-direction: column; gap: 0.25rem;
+    }
+    .sum-label { font-size: 0.78rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: #94a3b8; }
+    .sum-val { font-size: 1.55rem; font-weight: 800; }
+    .sum-income .sum-val { color: #10b981; }
+    .sum-expense .sum-val { color: #f43f5e; }
+    .sum-balance .sum-val { color: #0284c7; }
+    .sum-balance.negative .sum-val { color: #f43f5e; }
+
+    /* Add form */
+    .add-form {
+      background: #fff; border: 1px solid #e2e8f0; border-radius: 14px;
+      padding: 1.2rem; margin-bottom: 1.2rem;
+    }
+    .add-form h2 { font-size: 1rem; margin-bottom: 1rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 0.65rem; align-items: end; }
+    @media (max-width: 700px) { .form-row { grid-template-columns: 1fr 1fr; } }
+    .ff { display: flex; flex-direction: column; gap: 0.3rem; }
+    .ff label { font-size: 0.78rem; font-weight: 600; color: #475569; }
+    .ff input, .ff select {
+      border: 1px solid #e2e8f0; border-radius: 8px;
+      padding: 0.6rem 0.7rem; font: inherit; background: #f8fafc;
+    }
+    .ff input:focus, .ff select:focus { outline: none; border-color: #10b981; }
+    .add-btn {
+      padding: 0.6rem 1.2rem; background: #10b981; color: #fff;
+      border: none; border-radius: 8px; font: inherit; font-weight: 700;
+      cursor: pointer; white-space: nowrap;
+    }
+    .add-btn:hover { background: #059669; }
+
+    /* Filter bar */
+    .filter-bar {
+      background: #fff; border: 1px solid #e2e8f0; border-radius: 14px;
+      padding: 0.8rem 1rem; margin-bottom: 0.9rem;
+      display: flex; gap: 0.6rem; flex-wrap: wrap; align-items: center;
+    }
+    .filter-bar label { font-size: 0.82rem; font-weight: 600; color: #475569; }
+    .filter-bar select, .filter-bar input {
+      border: 1px solid #e2e8f0; border-radius: 6px;
+      padding: 0.4rem 0.6rem; font: inherit; font-size: 0.85rem;
+    }
+    .clear-btn {
+      margin-left: auto; padding: 0.4rem 0.85rem;
+      background: #fee2e2; color: #ef4444; border: none;
+      border-radius: 6px; font: inherit; font-size: 0.82rem; font-weight: 700;
+      cursor: pointer;
+    }
+    .clear-btn:hover { background: #fecaca; }
+
+    /* Entry list */
+    .entries-card {
+      background: #fff; border: 1px solid #e2e8f0; border-radius: 14px;
+      overflow: hidden; margin-bottom: 1.2rem;
+    }
+    .entries-head { padding: 0.9rem 1.2rem; border-bottom: 1px solid #f1f5f9; font-weight: 700; font-size: 0.95rem; }
+    .entry {
+      display: grid; grid-template-columns: 2fr 1fr 1fr auto;
+      gap: 0.5rem; align-items: center;
+      padding: 0.75rem 1.2rem; border-bottom: 1px solid #f8fafc;
+    }
+    @media (max-width: 600px) {
+      .entry { grid-template-columns: 1fr 1fr; }
+      .entry-date, .entry-del { display: none; }
+    }
+    .entry:last-child { border-bottom: none; }
+    .entry-note { font-size: 0.9rem; font-weight: 600; }
+    .entry-cat { font-size: 0.78rem; color: #64748b; }
+    .entry-amt { font-weight: 700; font-size: 0.95rem; text-align: right; }
+    .entry-amt.income { color: #10b981; }
+    .entry-amt.expense { color: #f43f5e; }
+    .entry-date { font-size: 0.75rem; color: #94a3b8; }
+    .entry-del { background: none; border: none; color: #cbd5e1; cursor: pointer; font-size: 1rem; padding: 0.2rem 0.4rem; }
+    .entry-del:hover { color: #f43f5e; }
+    .empty-msg { padding: 2rem; text-align: center; color: #94a3b8; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+
+<div class="ad-slot">
+  <!--
+  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXX"
+    data-ad-slot="SLOT_ID_1" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  -->
+  <div class="ad-ph">Advertisement</div>
+</div>
+
+<nav class="top-nav">
+  <a class="back-link" href="../index.html">← All Tools</a>
+  <span class="tool-title">💰 Daily Budget Tracker</span>
+  <span></span>
+</nav>
+
+<div class="wrap">
+
+  <!-- SUMMARY -->
+  <div class="summary">
+    <div class="sum-card sum-income">
+      <span class="sum-label">Total Income</span>
+      <span class="sum-val" id="totalIncome">Rp 0</span>
+    </div>
+    <div class="sum-card sum-expense">
+      <span class="sum-label">Total Expenses</span>
+      <span class="sum-val" id="totalExpense">Rp 0</span>
+    </div>
+    <div class="sum-card sum-balance" id="balanceCard">
+      <span class="sum-label">Balance</span>
+      <span class="sum-val" id="totalBalance">Rp 0</span>
+    </div>
+  </div>
+
+  <!-- ADD ENTRY -->
+  <div class="add-form">
+    <h2>Add Entry</h2>
+    <div class="form-row">
+      <div class="ff">
+        <label>Type</label>
+        <select id="entryType">
+          <option value="income">+ Income</option>
+          <option value="expense">− Expense</option>
+        </select>
+      </div>
+      <div class="ff">
+        <label>Amount (Rp)</label>
+        <input type="number" id="entryAmt" placeholder="50000" min="0" />
+      </div>
+      <div class="ff">
+        <label>Category</label>
+        <select id="entryCat">
+          <option>Food & Drink</option>
+          <option>Transport</option>
+          <option>Bills</option>
+          <option>Entertainment</option>
+          <option>Health</option>
+          <option>Work / Income</option>
+          <option>Shopping</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="ff">
+        <label>Note</label>
+        <input type="text" id="entryNote" placeholder="e.g. Lunch" />
+      </div>
+      <button class="add-btn" onclick="addEntry()">+ Add</button>
+    </div>
+  </div>
+
+  <!-- FILTER -->
+  <div class="filter-bar">
+    <label>Filter:</label>
+    <select id="filterType" onchange="render()">
+      <option value="all">All</option>
+      <option value="income">Income only</option>
+      <option value="expense">Expenses only</option>
+    </select>
+    <select id="filterCat" onchange="render()">
+      <option value="all">All categories</option>
+      <option>Food & Drink</option>
+      <option>Transport</option>
+      <option>Bills</option>
+      <option>Entertainment</option>
+      <option>Health</option>
+      <option>Work / Income</option>
+      <option>Shopping</option>
+      <option>Other</option>
+    </select>
+    <button class="clear-btn" onclick="clearAll()">🗑 Clear All</button>
+  </div>
+
+  <!-- ENTRIES -->
+  <div class="entries-card">
+    <div class="entries-head">Entries</div>
+    <div id="entryList"></div>
+  </div>
+
+  <div class="ad-slot" style="margin-bottom:2rem">
+    <!--
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXX"
+      data-ad-slot="SLOT_ID_2" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    -->
+    <div class="ad-ph">Advertisement</div>
+  </div>
+</div>
+
+<script>
+  const KEY = 'dk_budget_entries';
+  let entries = JSON.parse(localStorage.getItem(KEY) || '[]');
+
+  function fmtRp(n) { return 'Rp ' + Math.abs(n).toLocaleString('id-ID'); }
+
+  function save() { localStorage.setItem(KEY, JSON.stringify(entries)); }
+
+  function addEntry() {
+    const type = document.getElementById('entryType').value;
+    const amt  = parseFloat(document.getElementById('entryAmt').value);
+    const cat  = document.getElementById('entryCat').value;
+    const note = document.getElementById('entryNote').value.trim() || cat;
+    if (!amt || amt <= 0) { alert('Enter a valid amount.'); return; }
+    entries.unshift({
+      id: Date.now(),
+      type, amt, cat, note,
+      date: new Date().toLocaleDateString('id-ID', { day:'numeric', month:'short' })
+    });
+    document.getElementById('entryAmt').value = '';
+    document.getElementById('entryNote').value = '';
+    save(); render();
+  }
+
+  function del(id) {
+    entries = entries.filter(e => e.id !== id);
+    save(); render();
+  }
+
+  function clearAll() {
+    if (confirm('Delete all entries?')) { entries = []; save(); render(); }
+  }
+
+  function render() {
+    const ft = document.getElementById('filterType').value;
+    const fc = document.getElementById('filterCat').value;
+    const filtered = entries.filter(e => {
+      if (ft !== 'all' && e.type !== ft) return false;
+      if (fc !== 'all' && e.cat !== fc) return false;
+      return true;
+    });
+
+    let inc = 0, exp = 0;
+    entries.forEach(e => { if (e.type === 'income') inc += e.amt; else exp += e.amt; });
+    const bal = inc - exp;
+
+    document.getElementById('totalIncome').textContent  = fmtRp(inc);
+    document.getElementById('totalExpense').textContent = fmtRp(exp);
+    document.getElementById('totalBalance').textContent = (bal < 0 ? '−' : '') + fmtRp(bal);
+    document.getElementById('balanceCard').className    = 'sum-card sum-balance' + (bal < 0 ? ' negative' : '');
+
+    const list = document.getElementById('entryList');
+    if (filtered.length === 0) {
+      list.innerHTML = '<div class="empty-msg">No entries yet. Add your first one above.</div>';
+      return;
+    }
+    list.innerHTML = filtered.map(e => `
+      <div class="entry">
+        <div><div class="entry-note">${e.note}</div><div class="entry-cat">${e.cat}</div></div>
+        <div class="entry-amt ${e.type}">${e.type === 'income' ? '+' : '−'}${fmtRp(e.amt)}</div>
+        <div class="entry-date">${e.date}</div>
+        <button class="entry-del" onclick="del(${e.id})" title="Delete">✕</button>
+      </div>
+    `).join('');
+  }
+
+  document.getElementById('entryAmt').addEventListener('keydown', e => { if (e.key === 'Enter') addEntry(); });
+  render();
+</script>
+</body>
+</html>

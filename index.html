@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DailyKit — 10 Free Tools · Real Ad Income</title>
+  <meta name="description" content="10 free browser tools powered by ads. Wedding invites, rental contracts, a real coin game, QR codes, invoices and more." />
+  <!--
+  ╔════════════════════════════════════════════════════════════╗
+  ║  ADSENSE INCOME SETUP                                      ║
+  ║  1. Go to https://adsense.google.com                       ║
+  ║  2. Add this site URL and apply                            ║
+  ║  3. After approval, replace ca-pub-XXXXXXXXXX              ║
+  ║  4. Uncomment the <script> tag below                       ║
+  ╚════════════════════════════════════════════════════════════╝
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXX" crossorigin="anonymous"></script>
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div id="overlay" class="overlay" onclick="closePanel()"></div>
+
+<aside id="todoPanel" class="tp">
+  <div class="tp-hdr">
+    <div class="tp-title"><span class="tp-icon">📋</span><div><strong>Progress Tracker</strong><small id="tpSub">0 of 12 done</small></div></div>
+    <button class="tp-close" onclick="closePanel()">✕</button>
+  </div>
+  <div class="tp-bar-row">
+    <div class="tp-bar"><div id="tpFill" class="tp-fill"></div></div>
+    <span id="tpPct" class="tp-pct">0%</span>
+  </div>
+  <div class="tp-tabs">
+    <button class="tptab active" data-c="all" onclick="setTab(this)">All</button>
+    <button class="tptab" data-c="launch" onclick="setTab(this)">🚀 Launch</button>
+    <button class="tptab" data-c="biz" onclick="setTab(this)">💼 Biz</button>
+    <button class="tptab" data-c="mine" onclick="setTab(this)">✏ Mine</button>
+  </div>
+  <ul id="tpList" class="tp-list"></ul>
+  <div class="tp-add">
+    <input id="tpInput" type="text" placeholder="Add a custom task…" />
+    <button onclick="addTask()">Add</button>
+  </div>
+</aside>
+
+<header class="hdr">
+  <div class="hdr-inner wrap">
+    <a href="index.html" class="brand"><span class="brand-sq">DK</span><span class="brand-name">DailyKit</span></a>
+    <nav class="hdr-nav">
+      <a href="#game-sec">Game</a>
+      <a href="#tools-sec">Tools</a>
+      <a href="https://adsense.google.com" target="_blank" rel="noopener noreferrer">AdSense</a>
+    </nav>
+    <button class="tasks-btn" onclick="openPanel()">📋 Tasks&nbsp;<span id="tasksBadge" class="tasks-bdg">0/12</span></button>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-inner">
+    <p class="eyebrow">Ad-powered · Browser-only · No login needed</p>
+    <h1 class="hero-h1">10 tools.<br><em class="accent">Real income.</em></h1>
+    <p class="hero-sub">Wedding invites, rental contracts, QR codes — and one genuinely addictive coin game that earns every time someone plays.</p>
+    <div class="hero-btns">
+      <a class="btn-primary" href="products/game.html">🪙 Play CoinRush</a>
+      <a class="btn-ghost" href="#tools-sec">Browse Tools ↓</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hstat"><b>10</b><span>Products</span></div>
+      <div class="hdiv"></div>
+      <div class="hstat"><b>Free</b><span>For users</span></div>
+      <div class="hdiv"></div>
+      <div class="hstat"><b>Ads</b><span>Your income</span></div>
+      <div class="hdiv"></div>
+      <div class="hstat"><b>Local</b><span>Data saved</span></div>
+    </div>
+  </div>
+  <div class="hero-blobs" aria-hidden="true"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
+</section>
+
+<div class="ad-wrap wrap">
+  <div class="ad-ph">📢 Advertisement — <a href="https://adsense.google.com" target="_blank" rel="noopener noreferrer">Set up AdSense to earn here</a></div>
+</div>
+
+<section id="game-sec" class="section">
+  <div class="wrap">
+    <div class="game-card">
+      <div class="gc-left">
+        <span class="gc-badge">🎮 Highest ad-revenue product</span>
+        <h2 class="gc-title">CoinRush</h2>
+        <p class="gc-desc">Tap coins before they vanish. Chain combos for ×2 score. Survive increasing levels. An ad fires on every game-over — <strong>more plays = more impressions = more income.</strong></p>
+        <ul class="gc-feats">
+          <li>3 coin types · Gold, Diamond, Star</li>
+          <li>Combo ×2 multiplier system</li>
+          <li>Progressive difficulty levels</li>
+          <li>Ad slot on every game-over screen</li>
+          <li>High score saved to localStorage</li>
+        </ul>
+        <a class="btn-game" href="products/game.html">▶ Play Now</a>
+      </div>
+      <div class="gc-right" aria-hidden="true">
+        <div class="gc-screen">
+          <div class="gc-coin" style="--cx:26%;--cy:28%;--d:0s">🪙</div>
+          <div class="gc-coin" style="--cx:62%;--cy:16%;--d:.5s">💎</div>
+          <div class="gc-coin" style="--cx:46%;--cy:62%;--d:.9s">⭐</div>
+          <div class="gc-coin" style="--cx:10%;--cy:68%;--d:1.3s">🪙</div>
+          <div class="gc-coin" style="--cx:76%;--cy:48%;--d:.3s">🪙</div>
+          <div class="gc-hud"><span>Level <b id="gLevel">—</b></span><span>Best <b id="gBest">—</b></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="tools-sec" class="section">
+  <div class="wrap">
+    <div class="sec-head">
+      <div><h2 class="sec-title">All 10 Tools</h2><p class="sec-sub">Runs in browser · Data in localStorage · No signup</p></div>
+      <div class="chips">
+        <button class="chip active" data-f="all">All</button>
+        <button class="chip" data-f="event">Event</button>
+        <button class="chip" data-f="legal">Legal</button>
+        <button class="chip" data-f="finance">Finance</button>
+        <button class="chip" data-f="biz">Business</button>
+        <button class="chip" data-f="util">Utility</button>
+      </div>
+    </div>
+    <div class="tgrid">
+
+      <a class="tc" href="products/wedding-invitation.html" data-cat="event">
+        <div class="tc-bar" style="--bc:#8b5cf6"></div>
+        <div class="tc-ico" style="background:rgba(139,92,246,.1)">💌</div>
+        <div class="tc-body"><span class="tc-tag" style="color:#6d28d9;background:rgba(139,92,246,.1)">Event</span><h3>E-Wedding Invitation</h3><p>Animated invite — names, date, venue, message. Live preview. Print or share.</p></div>
+        <div class="tc-foot">Open Tool <span class="arr">→</span></div>
+      </a>
+
+      <a class="tc" href="products/rental-contract.html" data-cat="legal">
+        <div class="tc-bar" style="--bc:#10b981"></div>
+        <div class="tc-ico" style="background:rgba(16,185,129,.1)">🏠</div>
+        <div class="tc-body"><span class="tc-tag" style="color:#065f46;background:rgba(16,185,129,.1)">Legal</span><h3>Rental Contract Generator</h3><p>Landlord + tenant details → print-ready rental agreement in seconds.</p></div>
+        <div class="tc-foot">Open Tool <span class="arr">→</span></div>
+      </a>
+
+      <a class="tc tc-game" href="products/game.html" data-cat="util">
+        <div class="tc-bar" style="--bc:#f59e0b"></div>
+        <div class="tc-ico" style="background:rgba(245,158,11,.1)">🪙</div>
+        <div class="tc-body"><span class="tc-tag" style="color:#78350f;background:rgba(245,158,11,.15)">Game</span><h3>CoinRush</h3><p>Tap coins, chain combos, beat levels. Ad plays on every game-over.</p></div>
+        <div class="tc-foot" style="color:#f59e0b">Play Now <span class="arr">→</span></div>
+      </a>
+
+      <a class="tc" href="products/budget-tracker.html" data-cat="finance">
+        <div class="tc-bar" style="--bc:#059669"></div>
+        <div class="tc-ico" style="background:rgba(5,150,105,.1)">💰</div>
+        <div class="tc-body"><span class="tc-tag" style="color:#065f46;background:rgba(5,150,105,.1)">Finance</span><h3>Daily Budget Tracker</h3><p>Log income &amp; expenses by category. Auto balance. Saved locally.</p></div>
+        <div class="tc-foot">Open Tool <span class="arr">→</span></div>
+      </a>
+
+      <a class="tc" href="products/birthday-card.html" data-cat="event">
+        <div class="tc-bar" style="--bc:#ec4899"></div>
+        <div class="tc-ico" style="background:rgba(236,72,153,.1)">🎂</div>
+        <div class="tc-body"><span class="tc-tag" style="color:#9d174d;background:rgba(236,72,153,.1)">Event</span><h3>Birthday Card Maker</h3><p>Animated card with confetti explosion. Custom message + 5 color themes.</p></div>
+        <div class="tc-foot">Open Tool <span class="arr">→</span></div>
+      </a>
+
+      <a class="tc" href="products/event-rsvp.html" data-cat="event">
+        <div class="tc-bar" style="--bc:#16a34a"></div>
+        <div class="tc-ico" style="background:rgba(22,163,74,.1)">📋</div>
+        <div class="tc-body"><span class="tc-tag" style="color:#14532d;background:rgba(22,163,74,.1)">Event</span><h3>Event RSVP Page</h3><p>Build event page, collect RSVPs, track guest list. No account needed.</p></div>
+        <div class="tc-foot">Open Tool <span class="arr">→</span></div>
+      </a>
+
+      <a class="tc" href="products/invoice-generator.html" data-cat="biz">
+        <div class="tc-bar" style="--bc:#0284c7"></div>
+        <div class="tc-ico" style="background:rgba(2,132,199,.1)">🧾</div>
+        <div class="tc-body"><span class="tc-tag" style="color:#0c4a6e;background:rgba(2,132,199,.1)">Business</span><h3>Invoice Generator</h3><p>Line items, tax, discount → clean printable PDF invoice in seconds.</p></div>
+        <div class="tc-foot">Open Tool <span class="arr">→</span></div>
+      </a>
+
+      <a class="tc" href="products/qr-generator.html" data-cat="util">
+        <div class="tc-bar" style="--bc:#f97316"></div>
+        <div class="tc-ico" style="background:rgba(249,115,22,.1)">📱</div>
+        <div class="tc-body"><span class="tc-tag" style="color:#7c2d12;background:rgba(249,115,22,.1)">Utility</span><h3>QR Code Generator</h3><p>URL or text → downloadable QR. Custom colors, sizes, error levels.</p></div>
+        <div class="tc-foot">Open Tool <span class="arr">→</span></div>
+      </a>
+
+      <a class="tc" href="products/habit-tracker.html" data-cat="util">
+        <div class="tc-bar" style="--bc:#2563eb"></div>
+        <div class="tc-ico" style="background:rgba(37,99,235,.1)">✅</div>
+        <div class="tc-body"><span class="tc-tag" style="color:#1e3a8a;background:rgba(37,99,235,.1)">Productivity</span><h3>Daily Habit Tracker</h3><p>Streaks, 7-day grid, fire badges. All data saved locally.</p></div>
+        <div class="tc-foot">Open Tool <span class="arr">→</span></div>
+      </a>
+
+      <a class="tc" href="products/business-name.html" data-cat="biz">
+        <div class="tc-bar" style="--bc:#d97706"></div>
+        <div class="tc-ico" style="background:rgba(217,119,6,.1)">💡</div>
+        <div class="tc-body"><span class="tc-tag" style="color:#78350f;background:rgba(217,119,6,.1)">Business</span><h3>Business Name Generator</h3><p>Industry + keywords + style → 20 creative name ideas. Save &amp; copy.</p></div>
+        <div class="tc-foot">Open Tool <span class="arr">→</span></div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<div class="ad-wrap wrap" style="margin-bottom:2.5rem">
+  <div class="ad-ph">📢 Advertisement</div>
+</div>
+
+<footer class="footer">
+  <div class="wrap footer-inner">
+    <div class="footer-brand"><span class="brand-sq sm">DK</span><strong>DailyKit</strong><span class="footer-sep">—</span><span>Free tools, ad-powered income.</span></div>
+    <a class="footer-link" href="https://adsense.google.com" target="_blank" rel="noopener noreferrer">Set up AdSense →</a>
+  </div>
+</footer>
+
+<script>
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
+const LS='dk_todos_v3';
+let tasks,curTab='all';
+const DEFAULT_TASKS=[
+  {id:1, text:'Apply for Google AdSense account',            cat:'biz',    done:false},
+  {id:2, text:'Deploy site to Vercel or Netlify (free)',     cat:'launch', done:false},
+  {id:3, text:'Register a custom domain name',               cat:'biz',    done:false},
+  {id:4, text:'Set up Google Analytics',                     cat:'biz',    done:false},
+  {id:5, text:'Test all 10 products on a real mobile phone', cat:'launch', done:false},
+  {id:6, text:'Share site in 3 online communities',          cat:'launch', done:false},
+  {id:7, text:'Create social media account for DailyKit',    cat:'launch', done:false},
+  {id:8, text:'Reach 100 daily visitors',                    cat:'launch', done:false},
+  {id:9, text:'Earn first $1 from AdSense',                  cat:'biz',    done:false},
+  {id:10,text:'Earn first $10 from AdSense',                 cat:'biz',    done:false},
+  {id:11,text:'Share CoinRush in gaming communities',        cat:'launch', done:false},
+  {id:12,text:'Get first real player feedback on CoinRush',  cat:'launch', done:false},
+];
+function loadTasks(){const s=localStorage.getItem(LS);tasks=s?JSON.parse(s):DEFAULT_TASKS;if(!s)localStorage.setItem(LS,JSON.stringify(tasks));}
+function saveTasks(){localStorage.setItem(LS,JSON.stringify(tasks));}
+function openPanel(){document.getElementById('todoPanel').classList.add('open');document.getElementById('overlay').classList.add('show');document.body.style.overflow='hidden';}
+function closePanel(){document.getElementById('todoPanel').classList.remove('open');document.getElementById('overlay').classList.remove('show');document.body.style.overflow='';}
+function setTab(btn){document.querySelectorAll('.tptab').forEach(b=>b.classList.remove('active'));btn.classList.add('active');curTab=btn.dataset.c;renderTasks();}
+function toggleTask(id){const t=tasks.find(t=>t.id===id);if(t){t.done=!t.done;saveTasks();renderTasks();syncBadge();}}
+function removeTask(id){tasks=tasks.filter(t=>t.id!==id);saveTasks();renderTasks();syncBadge();}
+function addTask(){const inp=document.getElementById('tpInput');const txt=inp.value.trim();if(!txt)return;tasks.push({id:Date.now(),text:txt,cat:'mine',done:false});inp.value='';saveTasks();curTab='all';document.querySelectorAll('.tptab').forEach(b=>b.classList.remove('active'));document.querySelector('.tptab[data-c="all"]').classList.add('active');renderTasks();syncBadge();}
+function renderTasks(){
+  const shown=curTab==='all'?tasks:tasks.filter(t=>t.cat===curTab);
+  const done=tasks.filter(t=>t.done).length,total=tasks.length,pct=total?Math.round(done/total*100):0;
+  document.getElementById('tpSub').textContent=done+' of '+total+' done';
+  document.getElementById('tpFill').style.width=pct+'%';
+  document.getElementById('tpPct').textContent=pct+'%';
+  const cc={launch:'#6366f1',biz:'#0284c7',mine:'#10b981'};
+  const ul=document.getElementById('tpList');
+  if(!shown.length){ul.innerHTML='<li class="tp-empty">No tasks here yet.</li>';return;}
+  ul.innerHTML=shown.map(t=>`<li class="tp-item${t.done?' done':''}"><button class="tp-chk${t.done?' chkd':''}" onclick="toggleTask(${t.id})">${t.done?'✓':''}</button><span class="tp-txt">${esc(t.text)}</span><span class="tp-dot" style="background:${cc[t.cat]||'#94a3b8'}"></span><button class="tp-del" onclick="removeTask(${t.id})">✕</button></li>`).join('');
+}
+function syncBadge(){const done=tasks.filter(t=>t.done).length;document.getElementById('tasksBadge').textContent=done+'/'+tasks.length;}
+document.querySelectorAll('.chip').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));btn.classList.add('active');const f=btn.dataset.f;document.querySelectorAll('.tc').forEach(c=>{c.style.display=(f==='all'||c.dataset.cat===f)?'flex':'none';});}));
+document.getElementById('tpInput').addEventListener('keydown',e=>{if(e.key==='Enter')addTask();});
+const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}}),{threshold:0.08});
+document.querySelectorAll('.tc,.gc-left,.gc-right').forEach(el=>{el.classList.add('reveal');obs.observe(el);});
+const best=localStorage.getItem('cr_best');
+if(best&&parseInt(best)>0)document.getElementById('gBest').textContent=best+' pts';
+loadTasks();renderTasks();syncBadge();
+</script>
+</body>
+</html>
