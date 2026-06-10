@@ -1,0 +1,228 @@
+.page { display: flex; flex-direction: column; gap: var(--space-5); }
+
+.stats { display: flex; gap: var(--space-4); }
+
+.statItem { display: flex; align-items: center; gap: var(--space-3); }
+.statValue { font-size: var(--font-size-xl); font-weight: 700; color: var(--color-text); line-height: 1; }
+.statLabel { font-size: var(--font-size-xs); color: var(--color-muted); margin-top: 2px; }
+
+/* Grid */
+.gridWrapper {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.gridHeader, .habitRow {
+  display: grid;
+  grid-template-columns: 180px repeat(7, 1fr) 60px;
+  align-items: center;
+}
+
+.gridHeader {
+  background: var(--color-surface-2);
+  border-bottom: 1px solid var(--color-border);
+  padding: var(--space-2) 0;
+}
+
+.habitRow {
+  border-bottom: 1px solid var(--color-border);
+  min-height: 52px;
+}
+
+.habitRow:last-child { border-bottom: none; }
+
+.habitNameCol {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  overflow: hidden;
+}
+
+.habitEmoji { font-size: 18px; flex-shrink: 0; }
+
+.habitName {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+}
+
+.removeBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-muted);
+  display: flex;
+  opacity: 0;
+  transition: opacity var(--transition-fast), color var(--transition-fast);
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.habitRow:hover .removeBtn { opacity: 1; }
+.removeBtn:hover { color: var(--color-danger); }
+
+.dayCell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: var(--space-2) var(--space-1);
+}
+
+.dayName { font-size: var(--font-size-xs); color: var(--color-muted); font-weight: 600; }
+.dayNum { font-size: var(--font-size-sm); color: var(--color-text); font-weight: 500; }
+
+.dayCellBtn {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-2);
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: background var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast);
+  justify-self: center;
+  display: block;
+  padding: 0;
+}
+
+.dayCellBtn:hover { border-color: var(--habit-color, var(--color-accent)); transform: scale(1.1); }
+.dayCellBtn.logged { background: var(--habit-color, var(--color-accent)); }
+.dayCellBtn.today { box-shadow: 0 0 0 2px var(--habit-color, var(--color-accent)); }
+
+.streakCol { text-align: center; padding: 0 var(--space-3); }
+.streakNum { font-family: var(--font-mono); font-size: var(--font-size-md); font-weight: 700; color: var(--color-accent); }
+
+.empty {
+  text-align: center;
+  padding: var(--space-7);
+  color: var(--color-muted);
+  font-size: var(--font-size-sm);
+}
+
+/* Add form */
+.addForm { display: flex; flex-direction: column; gap: var(--space-4); }
+.formTitle { font-size: var(--font-size-md); font-weight: 600; color: var(--color-text); }
+.formRow { display: flex; gap: var(--space-3); }
+
+.emojiInput {
+  width: 56px;
+  text-align: center;
+  font-size: var(--font-size-lg);
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-2);
+  color: var(--color-text);
+  outline: none;
+  flex-shrink: 0;
+}
+
+.nameInput {
+  flex: 1;
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-3);
+  color: var(--color-text);
+  font-size: var(--font-size-md);
+  outline: none;
+  transition: border-color var(--transition-fast);
+}
+
+.nameInput:focus { border-color: var(--color-accent); }
+
+.colorRow { display: flex; gap: var(--space-2); flex-wrap: wrap; }
+
+.colorDot {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: transform var(--transition-fast), border-color var(--transition-fast);
+  padding: 0;
+}
+
+.colorDot:hover { transform: scale(1.15); }
+.colorSelected { border-color: white; box-shadow: 0 0 0 2px rgba(255,255,255,0.4); }
+
+.targetRow { display: flex; gap: var(--space-2); flex-wrap: wrap; }
+
+.dayToggle {
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  color: var(--color-muted);
+  cursor: pointer;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.dayToggleOn {
+  background: var(--color-accent-dim);
+  color: var(--color-accent);
+  border-color: var(--color-accent-dim);
+}
+
+.formActions { display: flex; gap: var(--space-3); }
+
+.saveBtn {
+  background: var(--color-accent);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-5);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity var(--transition-fast);
+}
+
+.saveBtn:hover { opacity: 0.85; }
+
+.cancelBtn {
+  background: none;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-4);
+  color: var(--color-muted);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+}
+
+.addHabitBtn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: none;
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  width: 100%;
+  justify-content: center;
+  color: var(--color-muted);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color var(--transition-fast), color var(--transition-fast);
+}
+
+.addHabitBtn:hover { border-color: var(--color-accent); color: var(--color-accent); }
+
+@media (max-width: 768px) {
+  .gridHeader, .habitRow {
+    grid-template-columns: 120px repeat(7, 1fr) 50px;
+  }
+  .habitNameCol { padding: var(--space-2); }
+  .habitEmoji { display: none; }
+}

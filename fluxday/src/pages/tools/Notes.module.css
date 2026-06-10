@@ -1,0 +1,226 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  height: calc(100vh - 120px);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: var(--space-5);
+  height: 100%;
+  align-items: stretch;
+}
+
+.sidebar {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-4);
+  gap: var(--space-4);
+  overflow-y: auto;
+}
+
+.newBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  background: var(--color-accent);
+  color: white;
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity var(--transition-fast);
+}
+
+.newBtn:hover {
+  opacity: 0.85;
+}
+
+.notesList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  overflow-y: auto;
+  flex: 1;
+}
+
+.noteTab {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background var(--transition-fast);
+  position: relative;
+  background: var(--color-surface-2);
+  border: 1px solid transparent;
+}
+
+.noteTab:hover {
+  background: var(--color-accent-glow);
+}
+
+.activeTab {
+  background: var(--color-accent-dim);
+  border-color: var(--color-accent);
+}
+
+.noteIcon {
+  color: var(--color-muted);
+  flex-shrink: 0;
+}
+
+.activeTab .noteIcon {
+  color: var(--color-accent);
+}
+
+.noteMeta {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.noteTitle {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.noteTime {
+  font-size: var(--font-size-xs);
+  color: var(--color-muted);
+}
+
+.deleteBtn {
+  opacity: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-muted);
+  transition: opacity var(--transition-fast), color var(--transition-fast);
+  padding: var(--space-1);
+  border-radius: var(--radius-sm);
+}
+
+.noteTab:hover .deleteBtn {
+  opacity: 1;
+}
+
+.deleteBtn:hover {
+  color: var(--color-danger);
+  background: rgba(248, 113, 113, 0.1);
+}
+
+.editorContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.editorCard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  height: 100%;
+  padding: var(--space-5) !important;
+  flex: 1;
+}
+
+.titleInput {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text);
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  padding-bottom: var(--space-2);
+  outline: none;
+  width: 100%;
+  transition: border-color var(--transition-fast);
+}
+
+.titleInput:focus {
+  border-color: var(--color-accent);
+}
+
+.contentInput {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--color-text);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+  line-height: 1.6;
+  resize: none;
+  outline: none;
+  width: 100%;
+  min-height: 250px;
+}
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  flex: 1;
+  background: var(--color-surface);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-7);
+}
+
+.emptyIcon {
+  color: var(--color-muted);
+  margin-bottom: var(--space-4);
+}
+
+.emptyState h3 {
+  font-size: var(--font-size-lg);
+  color: var(--color-text);
+  margin-bottom: var(--space-2);
+}
+
+.emptyState p {
+  font-size: var(--font-size-sm);
+  color: var(--color-muted);
+  margin-bottom: var(--space-5);
+  max-width: 300px;
+}
+
+.createBtn {
+  background: var(--color-accent);
+  color: white;
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-5);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity var(--transition-fast);
+}
+
+.createBtn:hover {
+  opacity: 0.85;
+}
+
+@media (max-width: 768px) {
+  .layout {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+  .page {
+    height: auto;
+  }
+}

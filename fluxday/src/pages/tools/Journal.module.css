@@ -1,0 +1,148 @@
+.page { display: flex; flex-direction: column; gap: var(--space-5); }
+
+.layout { display: flex; gap: var(--space-5); align-items: flex-start; }
+
+/* Calendar sidebar */
+.calSidebar {
+  width: 220px;
+  flex-shrink: 0;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  position: sticky;
+  top: var(--space-7);
+}
+
+.calNav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-4);
+}
+
+.calNavBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-muted);
+  display: flex;
+  padding: var(--space-1);
+  border-radius: var(--radius-sm);
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.calNavBtn:hover { background: var(--color-surface-2); color: var(--color-text); }
+
+.calMonthLabel { font-size: var(--font-size-sm); font-weight: 600; color: var(--color-text); }
+
+.calGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.calDayName {
+  font-size: var(--font-size-xs);
+  color: var(--color-muted);
+  text-align: center;
+  padding: var(--space-1) 0;
+  font-weight: 600;
+}
+
+.calDay {
+  aspect-ratio: 1;
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-xs);
+  color: var(--color-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--transition-fast), color var(--transition-fast);
+  position: relative;
+}
+
+.calDay:hover { background: var(--color-surface-2); color: var(--color-text); }
+.calSelected { background: var(--color-accent) !important; color: white !important; }
+.calToday { color: var(--color-accent); font-weight: 700; }
+.calHasEntry::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--color-accent);
+}
+.calSelected.calHasEntry::after { background: white; }
+
+/* Editor */
+.editorArea { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: var(--space-3); }
+
+.editorHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.editorDate {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+  color: var(--color-muted);
+}
+
+.moodRow { display: flex; gap: var(--space-2); }
+
+.moodBtn {
+  font-size: 20px;
+  background: none;
+  border: 2px solid transparent;
+  border-radius: var(--radius-sm);
+  padding: 2px;
+  cursor: pointer;
+  transition: transform var(--transition-fast), border-color var(--transition-fast);
+  line-height: 1;
+}
+
+.moodBtn:hover { transform: scale(1.2); }
+.moodSelected { border-color: var(--color-accent); transform: scale(1.15); }
+
+.editor {
+  width: 100%;
+  min-height: 400px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  color: var(--color-text);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-md);
+  line-height: 1.8;
+  resize: vertical;
+  outline: none;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.editor::placeholder { color: var(--color-muted); }
+
+.editor:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-accent-glow);
+}
+
+.autoSaveHint {
+  font-size: var(--font-size-xs);
+  color: var(--color-muted);
+  text-align: right;
+}
+
+@media (max-width: 768px) {
+  .layout { flex-direction: column; }
+  .calSidebar { width: 100%; position: static; }
+}
